@@ -77,6 +77,22 @@ export const useConvertImage = () => {
     setDownloadedIndices((prev) => new Set([...prev, index]));
   };
 
+  const downloadAll = () => {
+    downloadUrls.forEach((item, index) => {
+      const link = document.createElement("a");
+      link.href = item.url;
+      link.download = item.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Mark as downloaded
+      setTimeout(() => {
+        setDownloadedIndices((prev) => new Set([...prev, index]));
+      }, index * 100);
+    });
+  };
+
   return {
     files,
     format,
@@ -93,5 +109,6 @@ export const useConvertImage = () => {
     setPercentage,
     handleSubmit,
     markAsDownloaded,
+    downloadAll,
   };
 };

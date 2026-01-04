@@ -46,6 +46,7 @@ export default function ImageConverter() {
     setPercentage,
     handleSubmit,
     markAsDownloaded,
+    downloadAll,
   } = useConvertImage();
 
   return (
@@ -286,6 +287,10 @@ export default function ImageConverter() {
                     })}
                   </div>
                 </ScrollArea>
+                <Button onClick={downloadAll} className="w-full">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download All
+                </Button>
               </div>
             </div>
           )}
