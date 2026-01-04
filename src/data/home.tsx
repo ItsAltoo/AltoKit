@@ -14,34 +14,5 @@ export const homeData: HomeDataItem[] = [
     link: "/convert-image",
     icon: <FilterIcon />,
   },
-  {
-    title: "Image Converter",
-    description: "Convert images between different formats.",
-    link: "/convert-image",
-    icon: <FilterIcon />,
-  },
-  {
-    title: "Image Converter",
-    description: "Convert images between different formats.",
-    link: "/convert-image",
-    icon: <FilterIcon />,
-  },
-  {
-    title: "Image Converter",
-    description: "Convert images between different formats.",
-    link: "/convert-image",
-    icon: <FilterIcon />,
-  },
-  {
-    title: "Image Converter",
-    description: "Convert images between different formats.",
-    link: "/convert-image",
-    icon: <FilterIcon />,
-  },
-  {
-    title: "Image Converter",
-    description: "Convert images between different formats.",
-    link: "/convert-image",
-    icon: <FilterIcon />,
-  },
+  
 ];

@@ -6,9 +6,10 @@ export const useConvertImage = () => {
   const [format, setFormat] = useState<string>("png");
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
+  const [percentage, setPercentage] = useState<number>(100);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [downloadUrls, setDownloadUrls] = useState<
-    Array<{ url: string; filename: string }>
+    Array<{ url: string; filename: string; size: number }>
   >([]);
   const [downloadedIndices, setDownloadedIndices] = useState<Set<number>>(
     new Set()
@@ -37,6 +38,8 @@ export const useConvertImage = () => {
         formData.append("format", format);
         if (width > 0) formData.append("width", width.toString());
         if (height > 0) formData.append("height", height.toString());
+        if (percentage !== 100)
+          formData.append("percentage", percentage.toString());
 
         const response = await axios.post("/api/convert-image", formData, {
           responseType: "blob",
@@ -57,7 +60,7 @@ export const useConvertImage = () => {
             : originalName;
         const newFilename = `${nameWithoutExt}.${format}`;
 
-        return { url, filename: newFilename };
+        return { url, filename: newFilename, size: blob.size };
       });
 
       const results = await Promise.all(conversionPromises);
@@ -79,6 +82,7 @@ export const useConvertImage = () => {
     format,
     width,
     height,
+    percentage,
     isLoading,
     downloadUrls,
     downloadedIndices,
@@ -86,6 +90,7 @@ export const useConvertImage = () => {
     setFormat,
     setWidth,
     setHeight,
+    setPercentage,
     handleSubmit,
     markAsDownloaded,
   };

@@ -8,6 +8,7 @@ export async function POST(req: NextRequest) {
     const format = formData.get("format") as string;
     const width = formData.get("width") as string | null;
     const height = formData.get("height") as string | null;
+    const percentage = formData.get("percentage") as string | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -22,8 +23,18 @@ export async function POST(req: NextRequest) {
 
     let sharpInstance = sharp(buffer, { animated: format === "gif" });
 
-    // Apply resize if width or height is provided
-    if (width || height) {
+    // Apply resize based on percentage or width/height
+    if (percentage && percentage !== "100") {
+      const percentValue = parseInt(percentage, 10) / 100;
+      const metadata = await sharpInstance.metadata();
+      const resizeOptions: { width?: number; height?: number } = {};
+      if (metadata.width)
+        resizeOptions.width = Math.round(metadata.width * percentValue);
+      if (metadata.height)
+        resizeOptions.height = Math.round(metadata.height * percentValue);
+      sharpInstance = sharpInstance.resize(resizeOptions);
+    } else if (width || height) {
+      // Apply resize if width or height is provided and no percentage
       const resizeOptions: { width?: number; height?: number } = {};
       if (width) resizeOptions.width = parseInt(width, 10);
       if (height) resizeOptions.height = parseInt(height, 10);

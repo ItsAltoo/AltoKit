@@ -35,6 +35,7 @@ export default function ImageConverter() {
     format,
     width,
     height,
+    percentage,
     isLoading,
     downloadUrls,
     downloadedIndices,
@@ -42,6 +43,7 @@ export default function ImageConverter() {
     setFormat,
     setWidth,
     setHeight,
+    setPercentage,
     handleSubmit,
     markAsDownloaded,
   } = useConvertImage();
@@ -63,7 +65,7 @@ export default function ImageConverter() {
               </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="pt-4">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="picture">Upload Images</Label>
@@ -79,7 +81,17 @@ export default function ImageConverter() {
                   </div>
                   {files.length > 0 && (
                     <p className="text-sm text-muted-foreground">
-                      {files.length} file(s) selected
+                      {files.length} file(s) selected,{" "}
+                      {(() => {
+                        const totalBytes = files.reduce(
+                          (acc, file) => acc + file.size,
+                          0
+                        );
+                        const totalMB = totalBytes / (1024 * 1024);
+                        return totalMB >= 1
+                          ? `${totalMB.toFixed(2)} MB`
+                          : `${(totalBytes / 1024).toFixed(2)} KB`;
+                      })()}
                     </p>
                   )}
                 </div>
@@ -106,6 +118,35 @@ export default function ImageConverter() {
                 <div className="space-y-2">
                   <Label>Resize (Optional)</Label>
                   <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="percentage" className="text-sm">
+                          Scale Percentage
+                        </Label>
+                        <Input
+                          type="number"
+                          min={10}
+                          max={200}
+                          value={percentage}
+                          onChange={(e) =>
+                            setPercentage(Number(e.target.value))
+                          }
+                          className="w-24 h-8 text-sm"
+                        />
+                      </div>
+                      <Slider
+                        id="percentage"
+                        min={10}
+                        max={200}
+                        step={5}
+                        value={[percentage]}
+                        onValueChange={(value) => setPercentage(value[0])}
+                        className="w-full"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {percentage}% of original size. 100% = no scaling.
+                      </p>
+                    </div>
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <Label htmlFor="width" className="text-sm">
@@ -158,7 +199,8 @@ export default function ImageConverter() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Set to 0 for auto. Aspect ratio is maintained.
+                    Set width/height to 0 for auto. Aspect ratio is maintained.
+                    Percentage takes priority over width/height.
                   </p>
                 </div>
 
@@ -186,9 +228,22 @@ export default function ImageConverter() {
           {downloadUrls.length > 0 && (
             <div className="flex-1 flex items-center justify-center p-6  rounded-lg border-l md:border-t-0 border-t ">
               <div className="space-y-4 w-full max-w-sm">
-                <div className="flex items-center justify-center mb-4">
+                <div className="flex flex-col items-center justify-center mb-4 space-y-1">
                   <span className="text-sm font-medium ">
                     {downloadUrls.length} Convert Successfully
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Total:{" "}
+                    {(() => {
+                      const totalBytes = downloadUrls.reduce(
+                        (acc, item) => acc + item.size,
+                        0
+                      );
+                      const totalMB = totalBytes / (1024 * 1024);
+                      return totalMB >= 1
+                        ? `${totalMB.toFixed(2)} MB`
+                        : `${(totalBytes / 1024).toFixed(2)} KB`;
+                    })()}
                   </span>
                 </div>
                 <ScrollArea className="h-72 w-full rounded-md">
@@ -212,9 +267,19 @@ export default function ImageConverter() {
                             ) : (
                               <Download className="mr-2 h-4 w-4 shrink-0" />
                             )}
-                            <span className="wrap-break-word">
-                              {item.filename}
-                            </span>
+                            <div className="flex flex-col flex-1 min-w-0">
+                              <span className="wrap-break-word">
+                                {item.filename}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {(() => {
+                                  const sizeMB = item.size / (1024 * 1024);
+                                  return sizeMB >= 1
+                                    ? `${sizeMB.toFixed(2)} MB`
+                                    : `${(item.size / 1024).toFixed(2)} KB`;
+                                })()}
+                              </span>
+                            </div>
                           </Link>
                         </Button>
                       );

@@ -1,11 +1,14 @@
+import Background from "@/components/Background";
 import Header from "@/components/Header";
 import React from "react";
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="relative">
-      <Header />
-      {children}
+      <Background>
+        <Header />
+        {children}
+      </Background>
     </div>
   );
 };
