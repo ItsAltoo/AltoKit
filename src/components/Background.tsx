@@ -2,16 +2,16 @@
 import React, { useEffect, useState } from "react";
 
 const imageDatas = [
-  "/1.webp",
-  "/2.webp",
-  "/3.webp",
-  "/4.webp",
-  "/5.webp",
-  "/6.webp",
-  "/7.webp",
-  "/8.webp",
-  "/9.webp",
-  "/10.webp",
+  "/bg/1.webp",
+  "/bg/2.webp",
+  "/bg/3.webp",
+  "/bg/4.webp",
+  "/bg/5.webp",
+  "/bg/6.webp",
+  "/bg/7.webp",
+  "/bg/8.webp",
+  "/bg/9.webp",
+  "/bg/10.webp",
 ];
 
 const Background = ({ children }: { children: React.ReactNode }) => {
