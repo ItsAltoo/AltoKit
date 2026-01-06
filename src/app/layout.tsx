@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "AltoKit",
   description: "toolbox website",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/Madoka-Yuzuhara.jpeg",
   },
 };
 
