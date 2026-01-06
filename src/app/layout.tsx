@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import { ModeToggle } from "../components/ModeToggle";
+import { Analytics } from "@vercel/analytics/next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
           <ModeToggle />
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
