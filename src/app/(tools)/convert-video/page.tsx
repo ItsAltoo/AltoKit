@@ -1,4 +1,4 @@
-import VideoConvertView from "@/views/video-converter-view/VideoConvertView";
+import VideoConvertView from "@/views/video-converter-view/VideoConverterView";
 
 const page = () => {
   return (

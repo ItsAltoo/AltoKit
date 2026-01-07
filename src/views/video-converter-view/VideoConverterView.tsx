@@ -1,7 +1,5 @@
 "use client";
-
 import {
-  CldImage,
   CldUploadWidget,
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
@@ -17,10 +15,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import ImagePreviewDialog from "@/components/ImagePreviewDialog";
+import { formatFileSize, fetchFileSize } from "@/lib/formatFileSize";
 
 export default function VideoConvertView() {
   const [publicId, setPublicId] = useState<string>("");
   const [isDownloaded, setIsDownloaded] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [fileSize, setFileSize] = useState<string>("");
+
+  const handleFileSize = async (url: string) => {
+    const size = await fetchFileSize(url);
+    if (size) {
+      setFileSize(formatFileSize(size));
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -55,9 +64,10 @@ export default function VideoConvertView() {
                         typeof result.info === "object" &&
                         result.info?.public_id
                       ) {
-                        console.log("Upload Berhasil:", result.info);
                         setPublicId(result.info.public_id);
                         setIsDownloaded(false);
+                        const gifUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/f_gif,fl_lossy/${result.info.public_id}.gif`;
+                        handleFileSize(gifUrl);
                       }
                     }}
                   >
@@ -107,9 +117,12 @@ export default function VideoConvertView() {
                   </span>
                 </div>
 
-                <div className="border rounded-lg overflow-hidden bg-muted/20">
+                <div
+                  className="border rounded-lg overflow-hidden bg-muted/20 cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => setDialogOpen(true)}
+                >
                   <img
-                    src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/f_gif,q_auto/${publicId}.gif`}
+                    src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/f_gif,fl_lossy/${publicId}.gif`}
                     alt="Video converted to gif"
                     className="w-full h-auto"
                   />
@@ -121,7 +134,7 @@ export default function VideoConvertView() {
                   onClick={() => setIsDownloaded(true)}
                 >
                   <Link
-                    href={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/fl_attachment/f_gif/${publicId}.gif`}
+                    href={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/fl_attachment/f_gif,fl_lossy/${publicId}.gif`}
                     download={`${publicId}.gif`}
                   >
                     {isDownloaded ? (
@@ -132,7 +145,7 @@ export default function VideoConvertView() {
                     ) : (
                       <>
                         <Download className="mr-2 h-4 w-4" />
-                        Download GIF
+                        Download GIF {fileSize && `(${fileSize})`}
                       </>
                     )}
                   </Link>
@@ -142,6 +155,15 @@ export default function VideoConvertView() {
           )}
         </div>
       </Card>
+
+      {/* GIF Preview Dialog */}
+      <ImagePreviewDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        publicId={publicId}
+        title="GIF Conversion Result"
+        isVideoToGif={true}
+      />
     </div>
   );
 }

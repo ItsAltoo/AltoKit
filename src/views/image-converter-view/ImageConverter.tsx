@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,6 +26,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useConvertImage } from "@/lib/hooks/useConvertImage";
+import { formatFileSize, calculateTotalSize } from "@/lib/formatFileSize";
 import Link from "next/link";
 
 export default function ImageConverter() {
@@ -83,16 +83,7 @@ export default function ImageConverter() {
                   {files.length > 0 && (
                     <p className="text-sm text-muted-foreground">
                       {files.length} file(s) selected,{" "}
-                      {(() => {
-                        const totalBytes = files.reduce(
-                          (acc, file) => acc + file.size,
-                          0
-                        );
-                        const totalMB = totalBytes / (1024 * 1024);
-                        return totalMB >= 1
-                          ? `${totalMB.toFixed(2)} MB`
-                          : `${(totalBytes / 1024).toFixed(2)} KB`;
-                      })()}
+                      {calculateTotalSize(files)}
                     </p>
                   )}
                 </div>
@@ -240,10 +231,7 @@ export default function ImageConverter() {
                         (acc, item) => acc + item.size,
                         0
                       );
-                      const totalMB = totalBytes / (1024 * 1024);
-                      return totalMB >= 1
-                        ? `${totalMB.toFixed(2)} MB`
-                        : `${(totalBytes / 1024).toFixed(2)} KB`;
+                      return formatFileSize(totalBytes);
                     })()}
                   </span>
                 </div>
@@ -273,12 +261,7 @@ export default function ImageConverter() {
                                 {item.filename}
                               </span>
                               <span className="text-xs text-muted-foreground">
-                                {(() => {
-                                  const sizeMB = item.size / (1024 * 1024);
-                                  return sizeMB >= 1
-                                    ? `${sizeMB.toFixed(2)} MB`
-                                    : `${(item.size / 1024).toFixed(2)} KB`;
-                                })()}
+                                {formatFileSize(item.size)}
                               </span>
                             </div>
                           </Link>

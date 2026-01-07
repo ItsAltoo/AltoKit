@@ -1,4 +1,4 @@
-import { Gif, Filter } from "@mui/icons-material";
+import { Gif, Filter,CropOriginal } from "@mui/icons-material";
 
 interface HomeDataItem {
   title: string;
@@ -19,5 +19,11 @@ export const homeData: HomeDataItem[] = [
     description: "Convert videos to animated GIFs easily.",
     link: "/convert-video",
     icon: <Gif />,
+  },
+   {
+    title: "Remove Background",
+    description: "Remove backgrounds from images easily.",
+    link: "/remove-bg",
+    icon: <CropOriginal />,
   },
 ];
