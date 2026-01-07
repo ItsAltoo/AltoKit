@@ -29,7 +29,7 @@ const Background = ({ children }: { children: React.ReactNode }) => {
       }}
       className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed relative"
     >
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-[5px]"></div>
+      <div className="absolute inset-0 dark:bg-black/80 backdrop-blur-[5px]"></div>
       <div className="relative z-10">{children}</div>
     </div>
   );

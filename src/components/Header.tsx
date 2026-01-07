@@ -7,7 +7,7 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-between p-4 z-10">
+    <div className="lg:absolute top-0 left-0 w-full flex justify-between lg:p-4 z-10">
       <Button
         onClick={() => {
           if (window.history.length > 1) {
@@ -17,7 +17,7 @@ const Header = () => {
           }
         }}
         variant="outline"
-        className="m-4 rounded-full"
+        className="m-4 rounded-full cursor-pointer"
         size={"icon-lg"}
       >
         <ArrowLeft />
@@ -26,7 +26,7 @@ const Header = () => {
       <Button
         onClick={() => router.push("/")}
         variant="outline"
-        className="m-4 rounded-full"
+        className="m-4 rounded-full cursor-pointer"
         size={"icon-lg"}
       >
         <HomeIcon />

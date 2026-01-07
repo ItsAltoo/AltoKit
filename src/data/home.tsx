@@ -1,4 +1,4 @@
-import FilterIcon from "@mui/icons-material/Filter";
+import { Gif, Filter } from "@mui/icons-material";
 
 interface HomeDataItem {
   title: string;
@@ -12,7 +12,12 @@ export const homeData: HomeDataItem[] = [
     title: "Image Converter",
     description: "Convert images between different formats.",
     link: "/convert-image",
-    icon: <FilterIcon />,
+    icon: <Filter />,
   },
-  
+  {
+    title: "Video To GIF Converter",
+    description: "Convert videos to animated GIFs easily.",
+    link: "/convert-video",
+    icon: <Gif />,
+  },
 ];
